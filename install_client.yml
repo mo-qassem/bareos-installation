@@ -11,16 +11,19 @@
       yum:
         name: wget
         state: present
+      become_user: root
 
     - name: Download and configure Bareos repository
       get_url:
         url: https://download.bareos.com/bareos/release/
         dest: /etc/yum.repos.d/bareos.repo
+      become_user: root
 
     - name: Install Bareos File Daemon
       yum:
         name: bareos-fd
         state: present
+      become_user: root
 
     - name: Configure Bareos File Daemon settings
       template:
