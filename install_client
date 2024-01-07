@@ -1,0 +1,57 @@
+---
+- name: Install bareos client
+  hosts: all
+  become: true
+  gather_facts: true
+  become_user: exadmn
+  vars:
+    ansible_port: "{{ survey_ansible_port }}"
+  tasks:
+    - name: Install wget package
+      yum:
+        name: wget
+        state: present
+
+    - name: Download and configure Bareos repository
+      get_url:
+        url: http://download.bareos.org/bareos/release/19.2/CentOS_8/bareos.repo
+        dest: /etc/yum.repos.d/bareos.repo
+
+    - name: Install Bareos File Daemon
+      yum:
+        name: bareos-fd
+        state: present
+
+    - name: Configure Bareos File Daemon settings
+      template:
+        src: templates/client.conf.j2
+        dest: /etc/bareos/bareos-fd.d/client/myself.conf
+
+    - name: Configure Bareos Director settings
+      template:
+        src: templates/director.conf.j2
+        dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+
+    - name: Download and extract TLS files
+      get_url:
+        url: https://box110.exaservers.com/tls.tar.gz
+        dest: /tmp/tls.tar.gz
+
+    - name: Extract TLS files to Bareos directory
+      ansible.builtin.unarchive:
+        src: /tmp/tls.tar.gz
+        dest: /etc/bareos/
+        remote_src: yes
+      notify: restart bareos-fd
+
+    - name: Set ownership of Bareos directory
+      file:
+        path: /etc/bareos/
+        owner: bareos
+        group: bareos
+        recurse: yes
+
+    - name: restart bareos-fd
+      service:
+        name: bareos-fd
+        state: restarted
