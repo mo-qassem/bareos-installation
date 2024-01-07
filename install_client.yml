@@ -14,7 +14,7 @@
 
     - name: Download and configure Bareos repository
       get_url:
-        url: http://download.bareos.org/bareos/release/19.2/CentOS_8/bareos.repo
+        url: https://download.bareos.com/bareos/release/
         dest: /etc/yum.repos.d/bareos.repo
 
     - name: Install Bareos File Daemon
