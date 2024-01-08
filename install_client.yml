@@ -66,16 +66,13 @@
       become_user: root
 
     - name: Debug cpwd_var
-      debug:
-        var: cpwd_var
+      command: cat /tmp/cpwd_file
+      register: cpwd
 
     - name: Configure Bareos Director settings
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
-      vars:
-        cpwd_var: "{{ cpwd_var }}"
-      become_user: root
 
     - name: Download and extract TLS files
       get_url:
