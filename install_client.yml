@@ -69,6 +69,8 @@
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+      vars:
+        cpwd_var: "{{ cpwd_var }}"
       become_user: root
 
     - name: Download and extract TLS files
