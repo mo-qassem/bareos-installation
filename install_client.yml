@@ -61,7 +61,7 @@
 
     - name: Print the password
       debug:
-        var: generated_cpwd
+        msg: "this {{ cpwd }}"
 
     - name: Configure Bareos File Daemon settings
       template:
