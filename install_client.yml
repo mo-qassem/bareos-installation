@@ -70,7 +70,7 @@
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
       vars:
-        cpwd: "{{ cpwd.stdout }}"
+        cpwd-var: "{{ cpwd-var.stdout }}"
       become_user: root
 
     - name: Download and extract TLS files
