@@ -69,7 +69,7 @@
       command: cat /tmp/cpwd_file
       register: cpwd
       delegate_to: localhost
-      become: root
+      become_user: root
 
     - name: Configure Bareos Director settings
       template:
