@@ -68,6 +68,7 @@
     - name: Debug cpwd_var
       command: cat /tmp/cpwd_file
       register: cpwd
+      delegate_to: localhost
 
     - name: Configure Bareos Director settings
       template:
