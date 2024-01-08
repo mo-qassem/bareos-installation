@@ -7,23 +7,55 @@
   vars:
     ansible_port: "{{ survey_ansible_port }}"
   tasks:
-    - name: Install wget package
-      yum:
-        name: wget
-        state: present
-      become_user: root
+    - name: Identify Linux distribution
+      set_fact:
+        linux_distribution: "{{ ansible_facts['distribution'] | lower }}"
 
-    - name: Download and configure Bareos repository
+    - name: Download and configure Bareos repository for rhel based distro
       get_url:
-        url: https://download.bareos.com/bareos/release/
-        dest: /etc/yum.repos.d/bareos.repo
-      become_user: root
+        url: https://download.bareos.org/current/EL_8/add_bareos_repositories.sh
+        dest: /tmp/add_bareos_repositories.sh
+      when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
+
+    - name: change permission for the bareos script file
+      file:
+        path: "/tmp/add_bareos_repositories.sh"
+        mode: "0755"
+      when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
+
+    - name: run the script add the repository
+      command: "/tmp/add_bareos_repositories.sh"
+      when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Install Bareos File Daemon
       yum:
         name: bareos-fd
         state: present
       become_user: root
+      when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
+
+    - name: Download and configure Bareos repository for debain based distro
+      get_url:
+        url: https://download.bareos.org/current/xUbuntu_22.04/add_bareos_repositories.sh
+        dest: /etc/yum.repos.d/bareos.repo
+      when: linux_distribution == 'ubuntu'
+
+    - name: change permission for the bareos script file
+      file:
+        path: "/tmp/add_bareos_repositories.sh"
+        mode: "0755"
+      when: linux_distribution == 'ubuntu'
+
+    - name: run the script add the repository
+      command: "/tmp/add_bareos_repositories.sh"
+      when: linux_distribution == 'ubuntu'
+
+    - name: Install Bareos File Daemon
+      yum:
+        name: bareos
+        state: present
+      become_user: root
+      when: linux_distribution == 'ubuntu'
 
     - name: Configure Bareos File Daemon settings
       template:
