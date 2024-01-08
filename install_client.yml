@@ -59,16 +59,14 @@
       become_user: root
       when: linux_distribution == 'ubuntu'
 
+    - name: Print the password
+      debug:
+        var: generated_cpwd
+
     - name: Configure Bareos File Daemon settings
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
-      become_user: root
-
-    - name: Debug cpwd_var
-      command: cat /tmp/cpwd_file
-      register: cpwd
-      delegate_to: localhost
       become_user: root
 
     - name: Configure Bareos Director settings
