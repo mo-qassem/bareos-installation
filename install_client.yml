@@ -82,7 +82,6 @@
         dest: /etc/bareos/
         remote_src: yes
       become_user: root
-      notify: restart bareos-fd
 
     - name: Set ownership of Bareos directory
       file:
