@@ -31,7 +31,7 @@
       yum:
         name: bareos-fd
         state: present
-      become_user: root
+      become: true
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Download and configure Bareos repository for debain based distro
@@ -55,20 +55,20 @@
       apt:
         name: bareos
         state: present
-      become_user: root
+      become: true
       when: linux_distribution == 'ubuntu'
 
     - name: Configure Bareos File Daemon settings
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
-      become_user: root
+      become: true
 
     - name: Configure Bareos Director settings
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
-      become_user: root
+      become: true
 
     - name: Download and extract TLS files
       get_url:
@@ -80,7 +80,7 @@
         src: /tmp/tls.tar.gz
         dest: /etc/bareos/
         remote_src: yes
-      become_user: root
+      become: true
 
     - name: Set ownership of Bareos directory
       file:
@@ -88,9 +88,10 @@
         owner: bareos
         group: bareos
         recurse: yes
-      become_user: r
+      become: true
 
     - name: restart bareos-fd
       service:
         name: bareos-fd
         state: restarted
+      become: true
