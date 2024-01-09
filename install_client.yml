@@ -59,10 +59,6 @@
       become_user: root
       when: linux_distribution == 'ubuntu'
 
-    - name: Print the password
-      debug:
-        msg: "this {{ cpwd_v }}"
-
     - name: Configure Bareos File Daemon settings
       template:
         src: templates/client.conf.j2
