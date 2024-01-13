@@ -64,11 +64,13 @@
       when: linux_distribution == 'ubuntu'
 
     - name: Configure Bareos File Daemon settings
+      become: true
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
 
     - name: Configure Bareos Director settings
+      become: true
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
