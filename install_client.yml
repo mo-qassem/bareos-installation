@@ -65,12 +65,14 @@
 
     - name: Configure Bareos File Daemon settings
       become: true
+      become_user: root
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
 
     - name: Configure Bareos Director settings
       become: true
+      become_user: root
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
@@ -81,11 +83,12 @@
         dest: /tmp/tls.tar.gz
 
     - name: Extract TLS files to Bareos directory
+      become: true
+      become_user: root
       ansible.builtin.unarchive:
         src: /tmp/tls.tar.gz
         dest: /etc/bareos/
         remote_src: yes
-      become: true
 
     - name: Set ownership of Bareos directory
       file:
