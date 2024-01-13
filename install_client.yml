@@ -78,6 +78,8 @@
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
 
     - name: Download and extract TLS files
+      become: true
+      become_user: root
       get_url:
         url: https://box110.exaservers.com/tls.tar.gz
         dest: /tmp/tls.tar.gz
