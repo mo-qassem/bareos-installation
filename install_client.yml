@@ -93,15 +93,17 @@
         remote_src: yes
 
     - name: Set ownership of Bareos directory
+      become: true
+      become_user: root
       file:
         path: /etc/bareos/
         owner: bareos
         group: bareos
         recurse: yes
-      become: true
 
     - name: restart bareos-fd
+      become: true
+      become_user: root
       service:
         name: bareos-fd
         state: restarted
-      become: true
