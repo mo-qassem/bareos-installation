@@ -16,21 +16,24 @@
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: change permission for the bareos script file
+      become: true
       file:
         path: "/tmp/add_bareos_repositories.sh"
         mode: "0755"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: run the script add the repository
-      command: "/tmp/add_bareos_repositories.sh"
       become: true
+      become_user: root
+      command: "/tmp/add_bareos_repositories.sh"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Install Bareos File Daemon
+      become: true
+      become_user: root
       yum:
         name: bareos-fd
         state: present
-      become: true
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Download and configure Bareos repository for debain based distro
@@ -40,34 +43,35 @@
       when: linux_distribution == 'ubuntu'
 
     - name: change permission for the bareos script file
+      become: true
       file:
         path: "/tmp/add_bareos_repositories.sh"
         mode: "0755"
       when: linux_distribution == 'ubuntu'
 
     - name: run the script add the repository
-      command: "/tmp/add_bareos_repositories.sh"
+      become: true
       become_user: root
+      command: "/tmp/add_bareos_repositories.sh"
       when: linux_distribution == 'ubuntu'
 
     - name: Install Bareos File Daemon
+      become: true
+      become_user: root
       apt:
         name: bareos
         state: present
-      become: true
       when: linux_distribution == 'ubuntu'
 
     - name: Configure Bareos File Daemon settings
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
-      become: true
 
     - name: Configure Bareos Director settings
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
-      become: true
 
     - name: Download and extract TLS files
       get_url:
