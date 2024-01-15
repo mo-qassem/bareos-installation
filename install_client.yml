@@ -24,6 +24,7 @@
 
     - name: run the script add the repository
       become: true
+      become_user: root
       command: "/tmp/add_bareos_repositories.sh"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
