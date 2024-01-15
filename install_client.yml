@@ -25,7 +25,7 @@
     - name: run the script add the repository
       become: true
       become_user: root
-      command: "/tmp/add_bareos_repositories.sh"
+      command: "bash /tmp/add_bareos_repositories.sh"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Install Bareos File Daemon
@@ -52,7 +52,7 @@
     - name: run the script add the repository
       become: true
       become_user: root
-      command: "/tmp/add_bareos_repositories.sh"
+      command: "bash /tmp/add_bareos_repositories.sh"
       when: linux_distribution == 'ubuntu'
 
     - name: Install Bareos File Daemon
