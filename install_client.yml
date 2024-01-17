@@ -1,4 +1,4 @@
-- name: Install bareos client
+- name: Install 'Bareos' client
   hosts: all
   become: true
   become_user: exadmn
@@ -9,26 +9,26 @@
       set_fact:
         linux_distribution: "{{ ansible_facts['distribution'] | lower }}"
 
-    - name: Download and configure Bareos repository for rhel based distro
+    - name: Download and configure 'Bareos' repository for 'RHEL' based distro
       get_url:
         url: https://download.bareos.org/current/EL_8/add_bareos_repositories.sh
         dest: /tmp/add_bareos_repositories.sh
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
-    - name: change permission for the bareos script file
+    - name: Change permission for the 'Bareos' script file
       become: true
       file:
         path: "/tmp/add_bareos_repositories.sh"
         mode: "0755"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
-    - name: run the script add the repository
+    - name: Run the script add the repository
       become: true
       become_user: root
       command: "bash /tmp/add_bareos_repositories.sh"
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
-    - name: Install Bareos File Daemon
+    - name: Install 'Bareos' File Daemon
       become: true
       become_user: root
       yum:
@@ -36,26 +36,26 @@
         state: present
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
-    - name: Download and configure Bareos repository for debain based distro
+    - name: Download and configure 'Bareos' repository for 'DEBAIN' based distro
       get_url:
         url: https://download.bareos.org/current/xUbuntu_22.04/add_bareos_repositories.sh
         dest: /etc/yum.repos.d/bareos.repo
       when: linux_distribution == 'ubuntu'
 
-    - name: change permission for the bareos script file
+    - name: Change permission for the 'Bareos' script file
       become: true
       file:
         path: "/tmp/add_bareos_repositories.sh"
         mode: "0755"
       when: linux_distribution == 'ubuntu'
 
-    - name: run the script add the repository
+    - name: Run the script add the repository
       become: true
       become_user: root
       command: "bash /tmp/add_bareos_repositories.sh"
       when: linux_distribution == 'ubuntu'
 
-    - name: Install Bareos File Daemon
+    - name: Install 'Bareos File-Daemon'
       become: true
       become_user: root
       apt:
@@ -63,28 +63,28 @@
         state: present
       when: linux_distribution == 'ubuntu'
 
-    - name: Configure Bareos File Daemon settings
+    - name: Configure 'Bareos Client' settings
       become: true
       become_user: root
       template:
         src: templates/client.conf.j2
         dest: /etc/bareos/bareos-fd.d/client/myself.conf
 
-    - name: Configure Bareos Director settings
+    - name: Configure 'Bareos Director' settings
       become: true
       become_user: root
       template:
         src: templates/director.conf.j2
         dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
 
-    - name: Download and extract TLS files
+    - name: Download and extract 'TLS' files
       become: true
       become_user: root
       get_url:
         url: https://box110.exaservers.com/tls.tar.gz
         dest: /tmp/tls.tar.gz
 
-    - name: Extract TLS files to Bareos directory
+    - name: Extract 'TLS' files to 'Bareos' directory
       become: true
       become_user: root
       ansible.builtin.unarchive:
@@ -92,7 +92,7 @@
         dest: /etc/bareos/
         remote_src: yes
 
-    - name: Set ownership of Bareos directory
+    - name: Set ownership of 'Bareos' directory
       become: true
       become_user: root
       file:
@@ -101,7 +101,7 @@
         group: bareos
         recurse: yes
 
-    - name: restart bareos-fd
+    - name: Restart 'Bareos File-Daemon'
       become: true
       become_user: root
       service:
