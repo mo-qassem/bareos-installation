@@ -38,7 +38,7 @@
 
     - name: Download and configure 'Bareos' repository for 'DEBAIN' based distro
       get_url:
-        url: https://download.bareos.org/current/xUbuntu_22.04/add_bareos_repositories.sh
+        url: https://download.bareos.org/current/xUbuntu_20.04/add_bareos_repositories.sh
         dest: /etc/yum.repos.d/bareos.repo
       when: linux_distribution == 'ubuntu'
 
