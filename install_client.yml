@@ -29,6 +29,8 @@
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
 
     - name: Update 'YUM' package cache
+      become: true
+      become_user: root
       yum:
         update_cache: yes
       when: linux_distribution in ['rocky', 'almalinux', 'cloudlinux', 'centos']
@@ -61,6 +63,8 @@
       when: linux_distribution == 'ubuntu'
 
     - name: Update APT package cache
+      become: true
+      become_user: root
       apt:
         update_cache: yes
       when: linux_distribution == 'ubuntu'
