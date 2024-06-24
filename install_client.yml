@@ -65,7 +65,10 @@
     - name: Run the script add the repository
       become: true
       become_user: root
-      command: "bash /tmp/add_bareos_repositories.sh"
+      expect:
+        command: "bash /tmp/add_bareos_repositories.sh"
+        responses:
+          "File '/etc/apt/keyrings/bareos-experimental.gpg' exists. Overwrite? (y/N)": "y"
       when: linux_distribution == 'ubuntu'
 
     - name: Update APT package cache
