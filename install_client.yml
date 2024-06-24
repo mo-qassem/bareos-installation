@@ -62,13 +62,12 @@
         mode: "0755"
       when: linux_distribution == 'ubuntu'
 
-    - name: Run the script add the repository
-      become: true
-      become_user: root
+    - name: Run the script and answer the prompt
       expect:
-        command: "bash /tmp/add_bareos_repositories.sh"
+        command: bash /tmp/add_bareos_repositories.sh
         responses:
           "File '/etc/apt/keyrings/bareos-experimental.gpg' exists. Overwrite? (y/N)": "y"
+        timeout: 60
       when: linux_distribution == 'ubuntu'
 
     - name: Update APT package cache
