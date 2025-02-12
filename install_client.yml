@@ -101,7 +101,7 @@
       become: true
       become_user: root
       get_url:
-        url: https://box110.exaservers.com/tls.tar.gz
+        url: https://box119.exaservers.com/tls.tar.gz
         dest: /tmp/tls.tar.gz
 
     - name: Extract 'TLS' files to 'Bareos' directory
